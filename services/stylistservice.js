@@ -43,14 +43,14 @@ exports.addStylist = (query, cb) => {
     });
 };
 
-exports.searchStylist = (date, session, service, cb) => {
+exports.searchStylist = (date, session, service, location, cb) => {
   var search_date = date;
-  //var search_location = location;
+  var search_location = location;
   var search_service = service;
   var search_session = session;
 
   var statement =
-    "SELECT stylists.name, stylists.location, stylists.experiance, stylists.number, charges.service, charges.amount FROM stylists, charges WHERE  stylists.id IN (SELECT bookings.stylist_id FROM bookings WHERE bookings.session != :session AND bookings.date != :date) AND charges.stylistId= stylists.id AND charges.service= :service";
+    "SELECT stylists.name, stylists.location, stylists.experiance, stylists.number, charges.service, charges.amount FROM stylists, charges WHERE  stylists.id IN (SELECT bookings.stylist_id FROM bookings WHERE bookings.session != :session AND bookings.date != :date) AND charges.stylistId= stylists.id AND charges.service= :service AND stylists.location= :location";
   console.log(statement);
   sequelize
     .query(statement, {
@@ -58,7 +58,8 @@ exports.searchStylist = (date, session, service, cb) => {
       replacements: {
         date: search_date,
         session: search_session,
-        service: search_service
+        service: search_service,
+        location: search_location
       }
     })
     .then(data => {

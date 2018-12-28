@@ -57,7 +57,7 @@ exports.getOne = (req, res, next) => {
   var location = req.params.location;
   var service = req.params.service;
 
-  Stylist.searchStylist(date, session, service, rows => {
+  Stylist.searchStylist(date, session, service, location, rows => {
     if (!rows || !rows.length) {
       res.json({
         status: "failed",
